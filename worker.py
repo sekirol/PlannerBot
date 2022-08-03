@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
-from tools import get_access_data
+import bot_engine
 
 def main():
-    tg_token = get_access_data("telegram")
-    print(tg_token)
+    bot_engine.start()
 
 if __name__ == "__main__":
     main()
