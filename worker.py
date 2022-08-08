@@ -1,9 +1,18 @@
 #!/usr/bin/env python3
 
-import bot_engine
+import asyncio
+import bot_tools
 
-def main():
-    bot_engine.start()
+from aiogram import Bot, Dispatcher
+from tools import get_access_data
+
+async def main():
+    bot = Bot(get_access_data("telegram"))
+    dp = Dispatcher(bot)
+
+    bot_tools.register_handlers(dp)
+
+    await dp.start_polling()
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
