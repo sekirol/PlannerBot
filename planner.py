@@ -14,6 +14,13 @@ class Task:
         self.start_time = start_time
         self.group = group if group else Task.default_group
 
+    def __str__(self) -> str:
+        return f"Title: {self.title}\n" \
+               f"Created: {self.creation_time}\n" \
+               f"Duration: {self.duration}\n" \
+               f"Start time: {self.start_time}\n" \
+               f"Group: {self.group}\n"
+    
     def _set_creation_time(self):
         self.creation_time = datetime.now().isoformat(sep=' ', timespec='seconds')
         
@@ -27,7 +34,7 @@ class Planner:
         if not start_time:
             start_time = self._get_task_start_time()
 
-        self.tasks_list.append(Task(task_title, start_time, duration))
+        self.tasks_list.append(Task(task_title, start_time, duration, group))
 
     def _get_task_start_time(self):
         pass
