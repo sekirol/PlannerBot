@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-import asyncio
-import bot_tools
+import bot_engine
 
 from aiogram import Bot, Dispatcher
 from aiogram.utils import executor
@@ -17,9 +16,9 @@ def main():
     storage = JSONStorage(FSM_STORAGE_PATH)
     dp = Dispatcher(bot, storage=storage)
 
-    bot_tools.register_handlers(dp)
+    bot_engine.register_handlers(dp)
 
-    executor.start_polling(dp, skip_updates=True, on_shutdown=bot_tools.shutdown)
+    executor.start_polling(dp, skip_updates=True, on_shutdown=bot_engine.shutdown)
 
 if __name__ == "__main__":
     main()
