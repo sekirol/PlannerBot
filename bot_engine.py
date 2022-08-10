@@ -56,8 +56,8 @@ def register_handlers(dp: Dispatcher):
     dp.register_callback_query_handler(planning_calback_handler, state=AppState.planning)
 
 class BotEngine:
-    def __init__(self):
-        pass
+    def __init__(self, planner):
+        self.planner = planner
 
     def start(self):
         bot = Bot(get_access_data("telegram"))
