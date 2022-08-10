@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
 from aiogram import Dispatcher, types
-from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 class AppState(StatesGroup):
@@ -31,6 +29,9 @@ async def cmd_edit_handler(message: types.Message):
 async def new_task_handler(message: types.Message):
     await message.answer("Создана задача:\n"
                         f"{message.text}")
+
+async def shutdown(dp: Dispatcher):
+    await dp.storage.close()
 
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(cmd_start_handler, commands="start", state="*")
