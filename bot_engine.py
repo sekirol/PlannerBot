@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 
-from aiogram import Dispatcher, types
+from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.utils import executor
+from aiogram.contrib.fsm_storage.files import JSONStorage
+
+from tools import get_access_data
+
+FSM_STORAGE_PATH = "app_state.json"
 
 class AppState(StatesGroup):
     initial = State()
@@ -48,3 +54,17 @@ def register_handlers(dp: Dispatcher):
 
     dp.register_message_handler(planning_handler, state=AppState.create)
     dp.register_callback_query_handler(planning_calback_handler, state=AppState.planning)
+
+class BotEngine:
+    def __init__(self):
+        pass
+
+    def start(self):
+        bot = Bot(get_access_data("telegram"))
+
+        storage = JSONStorage(FSM_STORAGE_PATH)
+        dp = Dispatcher(bot, storage=storage)
+
+        register_handlers(dp)
+
+        executor.start_polling(dp, skip_updates=True, on_shutdown=shutdown)
