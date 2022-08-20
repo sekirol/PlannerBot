@@ -13,7 +13,7 @@ FSM_STORAGE_PATH = "../data/app_state.bin"
 async def shutdown(dp: Dispatcher):
     await dp.storage.close()
 
-class TgBotEngine:
+class BotEngine:
     def __init__(self):
         bot = Bot(get_access_data("telegram"))
         storage = PickleStorage(FSM_STORAGE_PATH)
@@ -23,7 +23,7 @@ class TgBotEngine:
         self._init_handlers()
 
     def _init_handlers(self):
-        register_handlers_common()
+        register_handlers_common(self.dp)
 
     def start(self):
         executor.start_polling(self.dp, skip_updates=True, on_shutdown=shutdown)
