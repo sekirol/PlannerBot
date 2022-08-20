@@ -5,6 +5,7 @@ from aiogram.utils import executor
 from aiogram.contrib.fsm_storage.files import PickleStorage
 
 from .handlers.common import register_handlers_common
+from .handlers.create import register_handlers_create
 
 from ..tools import get_access_data
 
@@ -24,6 +25,7 @@ class BotEngine:
 
     def _init_handlers(self):
         register_handlers_common(self.dp)
+        register_handlers_create(self.dp)
 
     def start(self):
         executor.start_polling(self.dp, skip_updates=True, on_shutdown=shutdown)
