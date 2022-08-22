@@ -8,6 +8,7 @@ from .handlers.basic import BasicHandlers
 from .handlers.create import CreateMenuHandlers
 
 from ..tools import get_access_data
+from ..planner import Planner
 
 FSM_STORAGE_PATH = "../data/app_state.bin"
 
@@ -21,12 +22,14 @@ class BotEngine:
         
         self.dp = Dispatcher(bot, storage=storage)
 
+        self.planner = Planner()
+
         self._init_handlers()
 
     def _init_handlers(self):
         handlers = [
             BasicHandlers(self.dp),
-            CreateMenuHandlers(self.dp)
+            CreateMenuHandlers(self.dp, self.planner)
         ]
 
     def start(self):

@@ -2,8 +2,8 @@
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 
+from ...planner import Planner
 from ..state_machine import AppState
-
 from . import messages
 
 class CreateMenuHandlers:
@@ -11,8 +11,9 @@ class CreateMenuHandlers:
     Command handlers of create menu item 
     """
 
-    def __init__(self, dp) -> None:
+    def __init__(self, dp: Dispatcher, planner: Planner) -> None:
         self.dp = dp
+        self.planner = planner
 
         self._register_handlers()
         
