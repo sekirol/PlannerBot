@@ -9,7 +9,7 @@ from . import messages
 
 class BasicHandlers:
     """
-    Basic commands handlers
+    Basic command handlers
     """
 
     def __init__(self, dp) -> None:
@@ -17,7 +17,7 @@ class BasicHandlers:
 
         self._register_handlers()
 
-    async def cmd_start(message: types.Message, state: FSMContext) -> None:
+    async def cmd_start(self, message: types.Message, state: FSMContext) -> None:
         await state.finish()
         await state.set_state(AppState.initial)
         await message.answer(messages.initial, reply_markup=types.ReplyKeyboardRemove())

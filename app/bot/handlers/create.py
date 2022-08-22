@@ -6,9 +6,19 @@ from ..state_machine import AppState
 
 from . import messages
 
-async def cmd_create(message: types.Message, state: FSMContext):
-    await state.set_state(AppState.create)
-    await message.answer(messages.create)
+class CreateMenuHandlers:
+    """
+    Command handlers of create menu item 
+    """
 
-def register_handlers_create(dp: Dispatcher):
-    dp.register_message_handler(cmd_create, commands="new", state=AppState.initial)
+    def __init__(self, dp) -> None:
+        self.dp = dp
+
+        self._register_handlers()
+        
+    async def cmd_create(self, message: types.Message, state: FSMContext) -> None:
+        await state.set_state(AppState.create)
+        await message.answer(messages.create)
+
+    def _register_handlers(self) -> None:
+        self.dp.register_message_handler(self.cmd_create, commands="new", state=AppState.initial)
