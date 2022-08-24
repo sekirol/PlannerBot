@@ -38,8 +38,10 @@ class CreateMenuHandlers:
         task_info["title"] = message.text.capitalize()
         await state.update_data(task_info)
 
+        groups = Planner.get_user_groups()
         keyboard = types.InlineKeyboardMarkup()
-        keyboard.add(types.InlineKeyboardButton("Test", callback_data="test"))
+        for item in groups:
+            keyboard.add(types.InlineKeyboardButton(item["name"], callback_data=item["id"]))
 
         answer_text = f"<b>{task_info['title']}</b>\n\n" \
                       "Выберите категорию задачи:"
