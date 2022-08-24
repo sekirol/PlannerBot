@@ -28,18 +28,20 @@ class CreateMenuHandlers:
             "duration": None,
             "start": None
         }
-
-        context = {"task_info": task_info}
+        groups = Planner.get_user_groups()
+ 
+        context = {"task_info": task_info, "groups": groups}
         await state.set_data(context)
 
         await message.answer(messages.create)
 
     async def new_task(self, message: types.Message, state: FSMContext) -> None:
+        context = await state.get_data()
+        
         title = message.text.capitalize()
-        groups = Planner.get_user_groups()
 
         keyboard = types.InlineKeyboardMarkup()
-        for item in groups:
+        for item in context["groups"]:
             keyboard.add(types.InlineKeyboardButton(item["name"], callback_data=item["id"]))
 
         answer_text = f"<b>{title}</b>\n\n" \
@@ -47,9 +49,7 @@ class CreateMenuHandlers:
 
         await message.answer(answer_text, parse_mode="HTML", reply_markup=keyboard)
 
-        context = await state.get_data()
         context["task_info"]["title"] = title
-        context["groups"] = groups
         await state.update_data(context)
         
     async def task_edit_callback(self, query: types.CallbackQuery):
