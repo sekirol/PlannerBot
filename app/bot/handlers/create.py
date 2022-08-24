@@ -28,25 +28,29 @@ class CreateMenuHandlers:
             "duration": None,
             "start": None
         }
-        await state.set_data(task_info)
+
+        context = {"task_info": task_info}
+        await state.set_data(context)
 
         await message.answer(messages.create)
 
     async def new_task(self, message: types.Message, state: FSMContext) -> None:
-        task_info = await state.get_data()
-
-        task_info["title"] = message.text.capitalize()
-        await state.update_data(task_info)
-
+        title = message.text.capitalize()
         groups = Planner.get_user_groups()
+
         keyboard = types.InlineKeyboardMarkup()
         for item in groups:
             keyboard.add(types.InlineKeyboardButton(item["name"], callback_data=item["id"]))
 
-        answer_text = f"<b>{task_info['title']}</b>\n\n" \
+        answer_text = f"<b>{title}</b>\n\n" \
                       "Выберите категорию задачи:"
 
         await message.answer(answer_text, parse_mode="HTML", reply_markup=keyboard)
+
+        context = await state.get_data()
+        context["task_info"]["title"] = title
+        context["groups"] = groups
+        await state.update_data(context)
         
     async def task_edit_callback(self, query: types.CallbackQuery):
         await query.answer(query.data)
